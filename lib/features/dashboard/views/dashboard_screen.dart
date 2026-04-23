@@ -1,3 +1,4 @@
+import 'package:field_task_and_visit_tracking/features/tasks/views/task_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../authentication/controllers/auth_controller.dart';
@@ -81,8 +82,7 @@ class DashboardScreen extends StatelessWidget {
 
   List<Widget> _buildScreens(UserRole role) {
     List<Widget> screens = [
-      // Placeholder for Task List Screen
-      const Center(child: Text('Task List Module (Coming Next!)')),
+      const TaskListScreen(), // Replaced the placeholder!
     ];
 
     if (role == UserRole.fieldAgent) {
