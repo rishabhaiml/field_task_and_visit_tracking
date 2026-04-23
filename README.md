@@ -61,3 +61,5 @@ To quickly review the app without running the code, I have included a testable A
 * **Authentication:** To make testing seamless, I bypassed passwords. The app simply checks the typed name against the local database to assign the correct role.
 * **Data Persistence:** Data is stored in memory. Restarting the app will refresh the database back to its seeded dummy state.
 * **Network Simulation:** I intentionally added small `Future.delayed` artificial delays in the mock services so you can see the UI loading states in action.
+
+Thank you for taking the time to review my code. I am looking forward to discussing the design decisions with the team!
