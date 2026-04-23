@@ -37,8 +37,8 @@ Since the data layer is mocked locally, running the app is incredibly easy.
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/rishabhaiml/field-force-app.git
-   cd field-force-app
+   git clone https://github.com/rishabhaiml/field_task_and_visit_tracking.git
+   cd field_task_and_visit_tracking
    ```
 2. **Install dependencies:**
    ```bash
