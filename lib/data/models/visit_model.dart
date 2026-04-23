@@ -2,13 +2,15 @@ class VisitModel {
   final String id;
   final String taskId;
   final String agentId;
+  final String status; // <-- NEW FIELD
   String notes;
-  String? mockAiInsight; // To store the mock AI output
+  String? mockAiInsight;
 
   VisitModel({
     required this.id,
     required this.taskId,
     required this.agentId,
+    required this.status, // <-- NEW FIELD
     required this.notes,
     this.mockAiInsight,
   });
@@ -18,6 +20,7 @@ class VisitModel {
       id: json['id'],
       taskId: json['taskId'],
       agentId: json['agentId'],
+      status: json['status'] ?? 'Completed', // <-- Default fallback
       notes: json['notes'],
       mockAiInsight: json['mockAiInsight'],
     );

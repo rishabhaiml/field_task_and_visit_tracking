@@ -8,7 +8,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Instantiate the controller for this screen
-    final AuthController authController = Get.put(AuthController());
+    final AuthController authController = Get.find<AuthController>();
 
     return Scaffold(
       body: SafeArea(

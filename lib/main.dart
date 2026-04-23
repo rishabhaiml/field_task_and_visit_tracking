@@ -1,3 +1,4 @@
+import 'package:field_task_and_visit_tracking/features/authentication/controllers/auth_controller.dart';
 import 'package:field_task_and_visit_tracking/features/authentication/views/login_screen.dart';
 import 'package:field_task_and_visit_tracking/features/dashboard/views/dashboard_screen.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +10,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Inject our fake backend into GetX memory
-  await Get.putAsync(() => MockDataService().init());
-  await Get.putAsync(() async => MockAiService());
+ await Get.putAsync(() => MockDataService().init());
+  Get.put(MockAiService());
+  Get.put(AuthController(), permanent: true);
 
   runApp(const MyApp());
 }
@@ -23,6 +25,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Field Force Assignment',
       theme: ThemeData(primarySwatch: Colors.blue),
+      debugShowCheckedModeBanner: false,
       // We will define the initialRoute and pages next!
       home: const Scaffold(body: Center(child: Text('Setup Complete!'))),
       // Add this inside your GetMaterialApp in main.dart:

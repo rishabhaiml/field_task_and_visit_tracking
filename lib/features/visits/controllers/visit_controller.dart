@@ -1,3 +1,4 @@
+import 'package:field_task_and_visit_tracking/data/models/task_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../data/models/visit_model.dart';
@@ -40,31 +41,35 @@ class VisitController extends GetxController {
     }
 
     if (currentUser == null) return;
-
     isSubmitting.value = true;
 
-    // 1. Generate the Mock AI Insight
+    // 1. Generate AI Insight
     final aiInsight = await _aiService.analyzeNotes(notes);
 
-    // 2. Create the visit record with BOTH notes and the AI insight
+    // 2. Create visit with the ACTUAL selected status
     final newVisit = VisitModel(
       id: 'v_${DateTime.now().millisecondsSinceEpoch}',
       taskId: taskId,
       agentId: currentUser.id,
+      status: visitStatus.value, // <-- Save the dropdown value!
       notes: notes,
-      mockAiInsight: aiInsight, // <-- Store the AI output
+      mockAiInsight: aiInsight,
     );
-
-    // 3. Save to database
     _dataService.visits.add(newVisit);
 
+    // 3. BONUS: Sync the Task Status so the Task List screen updates!
+    final taskIndex = _dataService.tasks.indexWhere((t) => t.id == taskId);
+    if (taskIndex != -1) {
+      if (visitStatus.value == 'In Progress')
+        _dataService.tasks[taskIndex].status = TaskStatus.inProgress;
+      if (visitStatus.value == 'Completed')
+        _dataService.tasks[taskIndex].status = TaskStatus.completed;
+      // Note: We leave it if pending.
+    }
+
     isSubmitting.value = false;
-
-    // Clear form
     notesController.clear();
-    visitStatus.value = 'Completed';
 
-    // 4. Show the result to the reviewer immediately!
     _showAiResultDialog(aiInsight);
   }
 

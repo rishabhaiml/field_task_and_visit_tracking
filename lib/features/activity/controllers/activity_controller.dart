@@ -1,11 +1,16 @@
+import 'package:field_task_and_visit_tracking/data/models/activity_log_model.dart';
+import 'package:field_task_and_visit_tracking/data/models/task_model.dart'
+    show TaskStatus, TaskModel;
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../data/services/mock_data_service.dart';
+
+import '../../../data/models/user_model.dart';
 
 class ActivityController extends GetxController {
   final MockDataService _dataService = Get.find<MockDataService>();
 
-  // Observable list of formatted log strings (in a real app, this would be an ActivityLogModel)
-  final activities = <String>[].obs;
+  final activities = <ActivityLogModel>[].obs;
 
   @override
   void onInit() {
@@ -14,19 +19,74 @@ class ActivityController extends GetxController {
   }
 
   void loadActivities() {
-    List<String> logs = [];
+    List<ActivityLogModel> logs = [];
 
-    // Generate logs from Tasks
+    // 1. Process Task Events
     for (var task in _dataService.tasks) {
-      logs.add('Task Assigned: "${task.title}" (Status: ${task.status.name})');
+      logs.add(
+        ActivityLogModel(
+          title:
+              'Task ${task.status == TaskStatus.pending ? 'Assigned' : 'Updated'}',
+          description:
+              'Task "${task.title}" is currently ${task.status.name.toUpperCase()}.',
+          timestamp: DateTime.now().subtract(const Duration(hours: 2)),
+          icon: Icons.assignment_turned_in,
+          iconColor: Colors.blue,
+        ),
+      );
     }
 
-    // Generate logs from Visits
+    // 2. Process Visit Events
     for (var visit in _dataService.visits) {
-      logs.add('Visit Logged: For Task ${visit.taskId}. AI Output generated.');
+      // Find the Agent Name
+      final agentName = _dataService.users
+          .firstWhere(
+            (u) => u.id == visit.agentId,
+            orElse: () => UserModel(
+              id: '',
+              name: 'Unknown Agent',
+              role: UserRole.fieldAgent,
+            ),
+          )
+          .name;
+
+      // Find the Task Title so we know WHICH visit this is!
+      final taskTitle = _dataService.tasks
+          .firstWhere(
+            (t) => t.id == visit.taskId,
+            orElse: () => TaskModel(
+              id: '',
+              title: 'Unknown Task',
+              description: '',
+              assignedToId: '',
+              status: TaskStatus.pending,
+              dueDate: DateTime.now(),
+            ),
+          )
+          .title;
+
+      // Dynamically change the text based on status
+      String actionText = 'Logged';
+      if (visit.status == 'Pending') actionText = 'Logged (Pending)';
+      if (visit.status == 'In Progress') actionText = 'Started';
+      if (visit.status == 'Completed') actionText = 'Completed';
+
+      logs.add(
+        ActivityLogModel(
+          title: '📍 Visit $actionText by $agentName',
+          description:
+              'For Task: "$taskTitle"\nAgent Notes: "${visit.notes}"', // <-- Added Task Title!
+          timestamp: DateTime.now(),
+          icon: visit.status == 'Completed'
+              ? Icons.check_circle
+              : Icons.location_on, // Dynamic icon!
+          iconColor: visit.status == 'Completed' ? Colors.green : Colors.orange,
+          aiInsight: visit.mockAiInsight,
+        ),
+      );
     }
 
-    // Reverse the list so the newest items appear at the top
-    activities.value = logs.reversed.toList();
+    logs.sort((a, b) => b.timestamp.compareTo(a.timestamp));
+    activities.value = logs;
   }
 }
