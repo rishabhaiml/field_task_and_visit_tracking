@@ -1,4 +1,5 @@
 import 'package:field_task_and_visit_tracking/features/tasks/views/task_list_screen.dart';
+import 'package:field_task_and_visit_tracking/features/visits/views/visit_form_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../authentication/controllers/auth_controller.dart';
@@ -81,12 +82,11 @@ class DashboardScreen extends StatelessWidget {
   }
 
   List<Widget> _buildScreens(UserRole role) {
-    List<Widget> screens = [
-      const TaskListScreen(), // Replaced the placeholder!
-    ];
+    List<Widget> screens = [const TaskListScreen()];
 
     if (role == UserRole.fieldAgent) {
-      screens.add(const Center(child: Text('Visit Tracking Module')));
+      // Plug the new screen into the Visits tab
+      screens.add(const VisitFormScreen());
     }
 
     screens.add(const Center(child: Text('Activity History Module')));
