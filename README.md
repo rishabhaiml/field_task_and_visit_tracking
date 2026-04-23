@@ -51,6 +51,12 @@ Since the data layer is mocked locally, running the app is incredibly easy.
 
 To quickly review the app without running the code, I have also included a testable Android APK in the repository releases.
 
+### 📥 Quick Test (APK Download)
+To quickly review the app without running the code, I have included a testable Android APK in the repository releases. You can download it directly here:
+* [Download FieldForceApp-Release.apk (v1.0.0)](https://github.com/rishabhaiml/field_task_and_visit_tracking/releases/tag/v1.0.0)
+```
+
+
 ## 📝 Assumptions & Trade-offs
 * **Authentication:** To make testing seamless, I bypassed passwords. The app simply checks the typed name against the local database to assign the correct role.
 * **Data Persistence:** Data is stored in memory. Restarting the app will refresh the database back to its seeded dummy state.
