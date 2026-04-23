@@ -28,7 +28,7 @@ class VisitFormScreen extends StatelessWidget {
             // Reactive Dropdown for Status
             Obx(
               () => DropdownButtonFormField<String>(
-                value: controller.visitStatus.value,
+                initialValue: controller.visitStatus.value,
                 decoration: const InputDecoration(border: OutlineInputBorder()),
                 items: ['Pending', 'In Progress', 'Completed']
                     .map(

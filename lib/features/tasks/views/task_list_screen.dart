@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/task_controller.dart';
-import '../../../core/constants/theme.dart'; // Assume you have basic colors here
+// Assume you have basic colors here
 
 class TaskListScreen extends StatelessWidget {
   const TaskListScreen({super.key});
