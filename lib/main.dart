@@ -3,12 +3,14 @@ import 'package:field_task_and_visit_tracking/features/dashboard/views/dashboard
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'data/services/mock_data_service.dart';
+import 'data/services/mock_ai_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Inject our fake backend into GetX memory
   await Get.putAsync(() => MockDataService().init());
+  await Get.putAsync(() async => MockAiService());
 
   runApp(const MyApp());
 }
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/login',
       getPages: [
         GetPage(name: '/login', page: () => const LoginScreen()),
-        
+
         GetPage(name: '/dashboard', page: () => const DashboardScreen()),
       ],
     );
